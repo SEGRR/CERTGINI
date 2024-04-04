@@ -11,8 +11,7 @@ import { Button, CircularProgress } from '@mui/material';
 import Paarameter from './Paarameter';
 import AddIcon from '@mui/icons-material/Add';
 import ExportModal from './ExportModal';
-import axios from 'axios';
-import { getTemplate, makeExportRequest, updateTemplate } from '../assets/api';
+import { getTemplate, updateTemplate } from '../assets/api';
 import { useParams } from 'react-router-dom';
 import BasicSpeedDial from '../components/BasicSpeedDial'
 import SimpleSnackbar from './SimpleSnackbar';
@@ -26,6 +25,7 @@ export default function PermanentDrawerLeft({ file , setFile }) {
   const [openModal , setOpenModal] = useState(null);
   const [TemplateName , setTemplateName] = useState('File Name');
   const [openSnackbar , setOpenSnackbar] = useState(false);
+  const [snackbarMsg , setSnackbarMsg] = useState('');
   const canvasRef = useRef(null);
 
 
@@ -42,16 +42,17 @@ export default function PermanentDrawerLeft({ file , setFile }) {
 
 useEffect(()=>{
   ( async ()=>{
-     console.log('called effect');
+
       let res = await getTemplate(id);
       console.log('param' ,res.data);
-      if(res.status === 200 && res.data.params.length > 0){
-        setParam(res.data.params);
+      if(res.status === 200 ){
+        if(res.data.params.length > 0)
+          setParam(res.data.params);
         setTemplateName(res.data.certificateFile.filename);
       }
-      // else{
-      //    alert('Could not Load Data, Try again later');
-      // }
+      else{
+         alert(res.data.msg);
+      }
   } )();
 },[]);
 
@@ -71,9 +72,18 @@ function drawOnCanvas(param){
  }
 
 async function saveTemplate(index){
-   console.log('saved called');
     let res = await updateTemplate(param , id);
-    setOpenSnackbar(true);
+    if(res.status == 200)
+    {
+      setSnackbarMsg('Progress Saved');
+      setOpenSnackbar(true);
+
+    }  
+    else
+      {
+        setSnackbarMsg('Error Occured while Saving');
+        setOpenSnackbar(true);
+      }
     
 }
 
@@ -241,15 +251,15 @@ function handlePositioning(index){
         >
         <Toolbar />
         <Divider/>
+        <>
         {
           param.map((p,index)=>
-          <>
           <Paarameter  key={index} removePosition={removePosition} index={index} param={p} positionOf={positionOf} handlePositioning={handlePositioning} handleName={handleName} handleFontFamily={handleFontFamily} handleFontSize={handleFontSize} handleFontStyle={handleFontStyle}  />
-          <Divider/>
-          </>
+          
           
           )
         }
+        </>
         <Button onClick={addNewParam} style={{marginTop:"10px" , marginBottom:"10px"}} variant='contained'>
           <AddIcon/>
           Add New Parameter
@@ -266,7 +276,7 @@ function handlePositioning(index){
      <BasicSpeedDial openModal={openModal} setOpenModal={setOpenModal} saveTemplate={saveTemplate} />
     <ExportModal param={param}  open={openModal == 1} setOpen={setOpenModal} />
     <CopyLink open={openModal == 4} setOpen={setOpenModal} / >
-    <SimpleSnackbar open={openSnackbar} setOpen={setOpenSnackbar} msg="Progress Saved"/>
+    <SimpleSnackbar open={openSnackbar} setOpen={setOpenSnackbar} msg={snackbarMsg}/>
         </>
   );
 }

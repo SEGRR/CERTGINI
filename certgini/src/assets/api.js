@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+// axios.defaults.withCredentials =true;
 const url = 'http://localhost:8181'
 export async function makeExportRequest(formData , id){
  let res = await axios.post(`${url}/export/${id}` , formData , {responseType:'blob'});
@@ -12,6 +13,13 @@ export async function getTemplate(id){
 
 export async function updateTemplate(data ,id){
    return await axios.post(`${url}/template/${id}/save`, data);
+}
+
+export async function uploadFile(file){
+   const formdata = new FormData
+   formdata.append('file' , file);
+   const res = await  axios.post(`${url}/upload` , formdata);
+   return res;
 }
 
 

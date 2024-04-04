@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Document, pdfjs } from 'react-pdf';
 
 import './canvas.css'
-export default function Canvas({ drawParams, canvasRef, remove , setRemove, file , handlePosition , positionOf, param , getParam}) {
+export default function Canvas({canvasRef, remove , setRemove, file , handlePosition , positionOf, param , getParam}) {
 
   
   const [isClicked , setClick] = useState(false);
@@ -87,7 +87,7 @@ export default function Canvas({ drawParams, canvasRef, remove , setRemove, file
       };
       
       renderPDF();
-      drawParams();
+   
     
   }, [file]);
 

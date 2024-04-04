@@ -109,7 +109,8 @@ export default function ExportModal({ param, open, handleExport, setOpen }) {
 
 
           <h2>Upload Name List </h2>
-          <InputFileUpload accept=".csv .xlsx" handleFileUpload={handleFileUpload} />
+          <p>Be sure the column namesin csv file matches with parameter names,else it won't work </p>
+          <InputFileUpload accept=".csv" handleFileUpload={handleFileUpload} />
 
           {file != null && <p> {file.name} ({formatBytes(file.size)})</p>}
           <br />

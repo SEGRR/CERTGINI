@@ -2,28 +2,32 @@ import React, { useState , useRef } from 'react'
 import './homepage.css'
 import InputFileUpload from '../components/InputFileUpload'
 import TimeLine from '../components/TimeLine'
-import axios from 'axios'
+
 import Canvas from '../Canvas'
 import EditIcon from '@mui/icons-material/Edit';
  import {useNavigate} from 'react-router-dom';
-import { Button } from '@mui/material'
+import { Box, Button, colors } from '@mui/material'
+import { uploadFile } from '../assets/api'
 export default function HomePage() {
   
   const [file , setFile] = useState(null);
   const canvasRef = useRef(null);
-
+  const [fileError , setFileError] = useState('');
   const navigate = useNavigate();
   // const history = useHistory();
  
  async function handleFileUpload(e){
       const cert = e.target.files[0];
-      console.log(cert)
-    // const formdata = new FormData
-    // formdata.append('file' , cert);
-
-    // const res = await  axios.post('http://localhost:8181/upload' , formdata , {responseType:'blob'});
-      //  console.log(typeof res.data);
+      if(cert.type.split('/')[1] != 'pdf'){
+          setFileError('Please upload a .pdf file');
+          return;
+      }
+      else if(cert.size > 1000000){
+        setFileError('Please upload file size under 10MB');
+        return;
+      }
        setFile(cert);
+       setFileError('');
 
        
    }
@@ -31,13 +35,15 @@ export default function HomePage() {
  async function handleEdit(){
     if(file == null) return 
 
-     const formdata = new FormData
-    formdata.append('file' , file);
-    const res = await  axios.post('http://localhost:8181/upload' , formdata);
-    console.log(res.data);
-    let {id} = res.data;
+    let res = await uploadFile(file);
+    if(res.status == 200){
 
-   navigate(`/temp/${id}`);
+      let {id} = res.data;
+      navigate(`/temp/${id}`);
+    }else{
+        alert('Error uploading file, Try again later');
+    }
+
     
     // history.push(`/temp/${res.id}`)
  }
@@ -54,6 +60,22 @@ export default function HomePage() {
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
 
+async function  takeDemo(){
+  try {
+    const response = await fetch('public/demo_file.pdf');
+    if (!response.ok) {
+        throw new Error('Failed to fetch file');
+    }
+    const blob = await response.blob();
+    setFile(blob);
+    
+    setFileError('');
+} catch (error) {
+    console.error('Error fetching file:', error);
+    setFileError(error.message);
+}
+}
+
   return (
     <>
     <nav>
@@ -63,7 +85,11 @@ export default function HomePage() {
       <h1>Welcome to GertGINI</h1>
       <h3>Generate and send certificate in bulk</h3>
        <h4>Get Started!</h4>
+       <Box>
        <InputFileUpload accept='.pdf' handleFileUpload={handleFileUpload}/>
+       <Button onClick={takeDemo} style={{marginLeft:'10px'}} variant="contained" size='large'>Take Demo </Button>
+       </Box>
+       <p style={{color:"red"}}>{fileError}</p>
        <p>Upload your certficate PDF file</p>
        <div className="dnd">
 

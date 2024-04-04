@@ -21,7 +21,7 @@ export default function TimeLine() {
           variant="body2"
           color="text.secondary"
         >
-          9:30 am
+         Certificate template with empty <br /> space to add information of benificiary
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector />
@@ -43,7 +43,7 @@ export default function TimeLine() {
           variant="body2"
           color="text.secondary"
         >
-          10:00 am
+         Using imersive UI add fields to   certificate <br /> with varitry of font options and styling 
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector />
@@ -60,6 +60,13 @@ export default function TimeLine() {
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
+      <TimelineOppositeContent
+          sx={{ m: 'auto 0' }}
+          variant="body2"
+          color="text.secondary"
+        >
+         Upload a .csv file with columns as parameter names <br /> and rows as acutal data to be added on to certificate 
+        </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector />
           <TimelineDot color="primary" variant="outlined">
@@ -75,6 +82,13 @@ export default function TimeLine() {
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
+      <TimelineOppositeContent
+          sx={{ m: 'auto 0' }}
+          variant="body2"
+          color="text.secondary"
+        >
+          Finally click on submit and your certficates <br /> will be genrated and sent to you in a zip file 
+        </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
           <TimelineDot color="secondary">
