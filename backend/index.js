@@ -24,7 +24,15 @@ mongoose
     console.error("Error connecting to MongoDB Atlas:", error);
   });
 
-app.use(cors());
+app.use(cors(
+    {
+
+        origin:["https://vercel.com/segrrs-projects/certgini/AdZP7iezb45twSP5yMYVRfdabvaB"],
+        methods: ["GET" , "POST"],
+        credentials:true
+    }
+
+));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Initialize express-session middleware
