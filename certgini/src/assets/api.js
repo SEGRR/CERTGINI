@@ -1,7 +1,8 @@
 import axios from 'axios'
 
-axios.defaults.withCredentials =true;
-const url = "https://certgini-api.vercel.app";
+// axios.defaults.withCredentials =true;
+// const url = "https://certgini-api.vercel.app";
+const url = "https://localhost:8181"
 export async function makeExportRequest(formData , id){
  let res = await axios.post(`${url}/export/${id}` , formData , {responseType:'blob'});
   return res;
