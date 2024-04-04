@@ -27,7 +27,7 @@ mongoose
 app.use(cors(
     {
 
-        origin:["https://certgini.vercel.app/"],
+        origin:["https://certgini.vercel.app"],
         methods: ["GET" , "POST"],
         credentials:true
     }
