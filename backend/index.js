@@ -170,3 +170,6 @@ async function updateTemplate(data, id) {
 }
 
 app.listen(8181);
+
+
+module.exports = app;
