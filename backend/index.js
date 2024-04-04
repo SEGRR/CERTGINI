@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 const app = express();
 const Template = require("./model/certificate");
 // const BLOB_READ_WRITE_TOKEN="vercel_blob_rw_mfsBIYAtX5MHdzqJ_vdw813UqZ6zT26joMx8WhIOwOVYfpO"
-app.use('/upload', express.static(path.join(process.cwd(), 'upload')));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/tmp', express.static(path.join(process.cwd(), 'tmp')));
 
 const uri =
