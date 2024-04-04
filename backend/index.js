@@ -5,11 +5,15 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const { pdfGenrator } = require("./pdfGenration");
+const {put } = require('@vercel/blob');
 // const session = require('express-session');
 const mongoose = require("mongoose");
 
 const app = express();
 const Template = require("./model/certificate");
+// const BLOB_READ_WRITE_TOKEN="vercel_blob_rw_mfsBIYAtX5MHdzqJ_vdw813UqZ6zT26joMx8WhIOwOVYfpO"
+app.use('/upload', express.static(path.join(process.cwd(), 'upload')));
+app.use('/tmp', express.static(path.join(process.cwd(), 'tmp')));
 
 const uri =
   "mongodb+srv://segrr:segrr2003@cluster0.9srbe2r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
