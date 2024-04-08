@@ -5,15 +5,14 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const { pdfGenrator } = require("./pdfGenration");
-
+// require('dotenv').config();
 const mongoose = require("mongoose");
 
 const app = express();
 const Template = require("./model/certificate");
 
-
-const uri =
-  "mongodb+srv://segrr:segrr2003@cluster0.9srbe2r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+console.log(process.env.DB_URL);
+const uri = process.env.DB_URL;
 
 // Connect to MongoDB Atlas
 mongoose
@@ -25,13 +24,13 @@ mongoose
     console.error("Error connecting to MongoDB Atlas:", error);
   });
 
-app.use(cors(
-    // {
+console.log(process.env.FRONTEND_URL);
 
-    //     origin:["https://certgini.vercel.app"],
-    //     methods: ["GET" , "POST"],
-    //     credentials:true
-    // }
+app.use(cors(
+    {
+        origin:process.env.FRONTEND_URL,
+        credentials:true
+    }
 
 ));
 app.use(bodyParser.json());

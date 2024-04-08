@@ -2,14 +2,14 @@ import React, { useState , useRef } from 'react'
 import './homepage.css'
 import InputFileUpload from '../components/InputFileUpload'
 import TimeLine from '../components/TimeLine'
-
+import demofile from '../assets/demo_file.pdf'
 import Canvas from '../Canvas'
 import EditIcon from '@mui/icons-material/Edit';
  import {useNavigate} from 'react-router-dom';
 import { Box, Button, colors } from '@mui/material'
 import { uploadFile } from '../assets/api'
 export default function HomePage() {
-  
+  console.log(demofile)
   const [file , setFile] = useState(null);
   const canvasRef = useRef(null);
   const [fileError , setFileError] = useState('');
@@ -62,7 +62,7 @@ export default function HomePage() {
 
 async function  takeDemo(){
   try {
-    const response = await fetch('public/demo_file.pdf');
+    const response = await fetch(demofile);
     if (!response.ok) {
         throw new Error('Failed to fetch file');
     }
