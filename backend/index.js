@@ -1,59 +1,32 @@
-const express = require("express");
-const cors = require("cors");
-const multer = require("multer");
-const path = require("path");
-const bodyParser = require("body-parser");
-const fs = require("fs");
-const { pdfGenrator } = require("./pdfGenration");
-// require('dotenv').config();
-const mongoose = require("mongoose");
+import express from 'express'
+import cors from 'cors'
+import multer from 'multer';
+import path from 'path';
+import bodyParser from 'body-parser';
+import fs from 'fs';
+import pdfGenrator from './pdfGenration';
+import { dbConnect } from './config/databaseConn';
 
+
+const PORT = process.env.PORT || 8000;
 const app = express();
 const Template = require("./model/certificate");
 
-console.log(process.env.DB_URL);
-const uri = process.env.DB_URL;
 
-// Connect to MongoDB Atlas
-mongoose
-  .connect(uri)
-  .then(() => {
-    console.log("Connected to MongoDB Atlas");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB Atlas:", error);
-  });
 
-console.log(process.env.FRONTEND_URL);
+// Connect to db
+dbConnect();
 
 app.use(cors(
     {
         origin:process.env.FRONTEND_URL,
         credentials:true
     }
-
 ));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// Initialize express-session middleware
 
-// let mongoStore = new MongoStore({ mongooseConnection: mongoose.connection });
-// app.use(cookieParser());
-// app.use(session({
-//     secret: 'yoyo',
-//     resave: false,
-//     saveUninitialized: false,
-//     // store: MongoStore.create({ mongoUrl: uri }) , // Store sessions in MongoDB
-//     store: new MemoryStore({
-//         checkPeriod: 86400000 // prune expired entries every 24h
-//       }),
-//     cookie: { maxAge: 24 * 60 * 60 * 1000 } // Session expiry time (in milliseconds)
-//   }));
 
-function arrayBufferToBlob(arrayBuffer, contentType) {
-  const buffer = Buffer.from(arrayBuffer);
-  return new Blob([buffer], { type: contentType });
-}
 
 const localStore = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -177,7 +150,10 @@ async function updateTemplate(data, id) {
   return doc;
 }
 
-app.listen(8181);
+app.listen(PORT,()=>{
+  console.log( `app listining on http://localhost:${PORT}`);
+  console.log(`Server Stats on http://localhost:${PORT}/status`);
+});
 
 
 module.exports = app;
